@@ -32,6 +32,6 @@ jobs:
           build-args: |
             CARDANO_VERSION=${{ github.event.release.tag_name }}
           push: true
-          tags: ${{ github.repository_owner }}/cardano:${{ github.event.release.tag_name }}
+          tags: ghcr.io/${{ github.repository_owner }}/cardano:${{ github.event.release.tag_name }}
 
           
