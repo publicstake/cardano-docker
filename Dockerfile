@@ -13,6 +13,7 @@ RUN mkdir -p /root/.local/bin
 
 RUN BUILD_PACKAGES="automake build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ tmux git jq wget libncursesw5 libtool autoconf" \
     && apt-get update -y \
+    && apt-get install -y netbase \
     && apt-get install -y $BUILD_PACKAGES \
     && AUTO_ADDED_PACKAGES=`apt-mark showauto` \
     && wget https://downloads.haskell.org/~cabal/cabal-install-$CABAL_VERSION/cabal-install-$CABAL_VERSION-x86_64-unknown-linux.tar.xz \
@@ -58,3 +59,4 @@ RUN BUILD_PACKAGES="automake build-essential pkg-config libffi-dev libgmp-dev li
     && apt-get remove --purge -y $BUILD_PACKAGES $AUTO_ADDED_PACKAGES \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
