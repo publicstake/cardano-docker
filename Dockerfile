@@ -28,7 +28,9 @@ RUN BUILD_PACKAGES="automake build-essential pkg-config libffi-dev libgmp-dev li
     && rm ghc-$GHC_VERSION-x86_64-deb9-linux.tar.xz \
     && cd ghc-$GHC_VERSION \
     && ./configure \
+    && find /usr/local | sort -u > /tmp/snapshot1 \
     && make install \
+    && find /usr/local | sort -u > /tmp/snapshot2 \
     && mkdir -p /tmp/build/libsodium \
     && cd /tmp/build/libsodium \
     && git clone https://github.com/input-output-hk/libsodium \
@@ -51,12 +53,12 @@ RUN BUILD_PACKAGES="automake build-essential pkg-config libffi-dev libgmp-dev li
     && cabal build all \
     && cp -p dist-newstyle/build/x86_64-linux/ghc-$GHC_VERSION/cardano-node-$CARDANO_VERSION/x/cardano-node/build/cardano-node/cardano-node /root/.local/bin/ \
     && cp -p dist-newstyle/build/x86_64-linux/ghc-$GHC_VERSION/cardano-cli-$CARDANO_VERSION/x/cardano-cli/build/cardano-cli/cardano-cli /root/.local/bin/ \
-    && cd /tmp/build/ghc/ghc-$GHC_VERSION \
-    && make uninstall \
-    && rm -rf /tmp/build \
+    && comm -3 /tmp/snapshot1 /tmp/snapshot2 | xargs rm -rf \
+    && rm /tmp/snapshot1 /tmp/snapshot2 \
     && rm -rf /root/.cabal \
     && rm /root/.local/bin/cabal \
     && apt-get remove --purge -y $BUILD_PACKAGES $AUTO_ADDED_PACKAGES \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/build
 
