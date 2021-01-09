@@ -1,11 +1,11 @@
 FROM ghcr.io/publicstake/cardano:1.24.2
 
 ENV TEMPLATES_PATH /root/.templates
-ENV NODE_CONFIG_PATH /root/.cardano/config
-ENV NODE_DB_PATH /root/.cardano/db
-ENV NODE_SOCKET_PATH /root/.cardano/node.socket
-ENV NODE_PORT 3001
-ENV NODE_HOST_ADDRESS 0.0.0.0
+ENV CARDANO_NODE_CONFIG_PATH /root/.cardano/config
+ENV CARDANO_NODE_DB_PATH /root/.cardano/db
+ENV CARDANO_NODE_SOCKET_PATH /root/.cardano/node.socket
+ENV CARDANO_NODE_PORT 3001
+ENV CARDANO_NODE_HOST_ADDRESS 0.0.0.0
 
 RUN apt-get update -y \
   && apt-get install -y gettext-base \
