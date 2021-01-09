@@ -35,7 +35,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./base
-          file: ./Dockerfile
           platforms: linux/amd64
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/cardano:${{ github.event.release.tag_name }}
@@ -45,7 +44,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./node
-          file: ./Dockerfile
           platforms: linux/amd64
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/cardano-node:${{ github.event.release.tag_name }}
@@ -55,7 +53,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./node-mainnet
-          file: ./Dockerfile
           platforms: linux/amd64
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/cardano-node-mainnet:${{ github.event.release.tag_name }}
