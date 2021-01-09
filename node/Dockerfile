@@ -1,4 +1,4 @@
-FROM ghcr.io/publicstake/cardano:1.24.2
+FROM publicstake/cardano:1.24.2
 
 ENV TEMPLATES_PATH /root/.templates
 ENV CARDANO_NODE_CONFIG_PATH /root/.cardano/config
