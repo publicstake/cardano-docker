@@ -1,4 +1,4 @@
-FROM publicstake/cardano-node:1.24.2
+FROM publicstake/cardano:1.24.2
 
 COPY config.json /root/.cardano/config/
 COPY mainnet-byron-genesis.json /root/.cardano/config/

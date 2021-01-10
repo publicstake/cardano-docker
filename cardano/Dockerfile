@@ -1,4 +1,4 @@
-FROM publicstake/cardano:1.24.2
+FROM publicstake/cardano-base:1.24.2
 
 ENV TEMPLATES_PATH /root/.templates
 ENV CARDANO_NODE_CONFIG_PATH /root/.cardano/config
@@ -8,12 +8,14 @@ ENV CARDANO_NODE_PORT 3001
 ENV CARDANO_NODE_HOST_ADDRESS 0.0.0.0
 
 RUN apt-get update -y \
-  && apt-get install -y gettext-base \
+  && apt-get install -y gettext-base jq \
   && rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /usr/local/bin/
 COPY rest-config.json /root/.cardano/config/
 COPY topology.json /root/.cardano/config/
 COPY templates /root/.templates
+RUN chmod 400 -R /root/.cardano/config \
+  && chmod 400 -R /root/.templates
 
 ENTRYPOINT ["entrypoint.sh"]

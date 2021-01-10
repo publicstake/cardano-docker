@@ -6,7 +6,7 @@ on:
 
 jobs:
   push_to_registry:
-    name: Push Docker images to ghcr
+    name: Push images to DockerHub
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -30,33 +30,33 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push base
+      - name: Push cardano-base
         uses: docker/build-push-action@v2
         with:
-          context: ./base
-          file: ./base/Dockerfile
+          context: ./cardano-base
+          file: ./cardano-base/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ github.repository_owner }}/cardano-base:${{ github.event.release.tag_name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Push cardano
+        uses: docker/build-push-action@v2
+        with:
+          context: ./cardano
+          file: ./cardano/Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ github.repository_owner }}/cardano:${{ github.event.release.tag_name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      - name: Push node
+      - name: Push cardano-mainnet
         uses: docker/build-push-action@v2
         with:
-          context: ./node
-          file: ./node/Dockerfile
+          context: ./cardano-mainnet
+          file: ./cardano-mainnet/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ github.repository_owner }}/cardano-node:${{ github.event.release.tag_name }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-      - name: Push node-mainnet
-        uses: docker/build-push-action@v2
-        with:
-          context: ./node-mainnet
-          file: ./node-mainnet/Dockerfile
-          platforms: linux/amd64
-          push: true
-          tags: ${{ github.repository_owner }}/cardano-node-mainnet:${{ github.event.release.tag_name }}
+          tags: ${{ github.repository_owner }}/cardano-mainnet:${{ github.event.release.tag_name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
