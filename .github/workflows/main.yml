@@ -22,7 +22,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.event.release.tag_name }}
+          key: ${{ runner.os }}-buildx
           restore-keys: |
             ${{ runner.os }}-buildx-
       - name: Login to GitHub Container Registry
@@ -37,26 +37,46 @@ jobs:
           file: ./cardano-base/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ github.repository_owner }}/cardano-base:${{ github.event.release.tag_name }}
+          tags: ${{ github.repository_owner }}/cardano-base:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      - name: Push cardano
+      - name: Push cardano-builder
         uses: docker/build-push-action@v2
         with:
-          context: ./cardano
-          file: ./cardano/Dockerfile
+          context: ./cardano-builder
+          file: ./cardano-builder/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ github.repository_owner }}/cardano:${{ github.event.release.tag_name }}
+          tags: ${{ github.repository_owner }}/cardano-builder:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      - name: Push cardano-mainnet
+      - name: Push cardano-build-node
         uses: docker/build-push-action@v2
         with:
-          context: ./cardano-mainnet
-          file: ./cardano-mainnet/Dockerfile
+          context: ./cardano-build-node
+          file: ./cardano-build-node/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ github.repository_owner }}/cardano-mainnet:${{ github.event.release.tag_name }}
+          tags: ${{ github.repository_owner }}/cardano-build-node:${{ github.event.release.tag_name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Push cardano-node
+        uses: docker/build-push-action@v2
+        with:
+          context: ./cardano-node
+          file: ./cardano-node/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ github.repository_owner }}/cardano-node:${{ github.event.release.tag_name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Push cardano-node-mainnet
+        uses: docker/build-push-action@v2
+        with:
+          context: ./cardano-node-mainnet
+          file: ./cardano-node-mainnet/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ github.repository_owner }}/cardano-node-mainnet:${{ github.event.release.tag_name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
