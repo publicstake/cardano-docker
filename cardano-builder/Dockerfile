@@ -1,5 +1,8 @@
 FROM publicstake/cardano-base:latest
 
+ENV CABAL_VERSION 3.2.0.0
+ENV GHC_VERSION 8.10.2
+ENV LIBSODIUM_REF 66f017f1
 ENV PATH /root/.local/bin:$PATH
 RUN mkdir -p /root/.local/bin
 
